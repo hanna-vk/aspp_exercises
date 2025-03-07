@@ -1,0 +1,144 @@
+Answers to exercises 1-4 can be found in each notebook respectively, and summarized here. 
+
+----------------------------------------------------------------
+
+EXERCISE 1
+
+class Person:
+    def __init__(self, firstname, lastname):
+        self.firstname = firstname
+        self.lastname = lastname
+    
+    def full_name(self):
+        return f"{self.firstname} {self.lastname}"
+
+class Student(Person):
+    def __init__(self, firstname, lastname, subject):
+        super().__init__(firstname, lastname)
+        self.subject = subject
+    
+    def printNameSubject(self):
+        print(f"{self.full_name()}, {self.subject}")
+
+if __name__ == "__main__":
+    me = Student('Hanna', 'Molin', 'Engineering')
+    me.printNameSubject()
+
+
+----------------------------------------------------------------
+
+EXERCISE 2
+
+import numpy as np
+
+----------
+a = np.zeros(10)
+a[4] = 1
+print(a)
+
+----------
+b = np.arange(10, 50)
+print(b)
+
+----------
+c = np.arange(10)
+print('Original vector is: ', c)
+c_rev = c[::-1]
+c_rev
+print('Reversed vector is: ', c_rev)
+
+----------
+d = np.arange(9)
+d = d.reshape(3,3)
+print(d)
+
+----------
+e = np.array([1,2,0,0,4,0])
+e_ind = e > 0
+print(e_ind)
+
+f = np.random.random((30))
+f_mean = np.mean(f)
+print(f_mean)
+
+----------
+g = np.zeros((4, 4),dtype=int)
+g[0,:] = 1
+g[-1,:] = 1
+g[:,0] = 1
+g[:,-1] = 1
+print(g)
+
+----------
+h = np.zeros((8, 8),dtype=int)
+h[1::2, ::2] = 1 
+h[::2, 1::2] = 1
+print(h)
+
+----------
+i = np.array([[0,1],[1,0]],dtype=int)
+i = np.tile(i,(4,4))
+print(i)
+
+----------
+j = np.arange(11)
+j[3:9:1] = -j[3:9:1]
+print(j)
+
+----------
+k = np.random.random(10)
+k = np.sort(k)
+print(k)
+
+----------
+A = np.random.randint(0,2,5)
+B = np.random.randint(0,2,5)
+equal = B == A
+print(equal)
+
+----------
+m = np.arange(10, dtype=np.int32)
+print(m.dtype)
+print(m)
+m = np.square(m)
+print(m.dtype)
+print(m)
+
+----------
+A = np.arange(9).reshape(3,3)
+B = A + 1
+C = np.dot(A,B)
+D = np.diagonal(C)
+print('C = ', C)
+print('Diagonal = ', D)
+
+----------------------------------------------------------------
+
+EXERCISE 3
+
+# matmult_improved.py
+import numpy as np
+
+def mat_mult(N):
+    # Generate random matrices
+    X = np.random.randint(0, 100, (N, N))
+    Y = np.random.randint(0, 100, (N, N + 1))
+    
+    # Matrix multiplication
+    result = np.dot(X, Y)
+    return result
+
+N = 250
+result = mat_mult(N)
+print(result)
+
+----------------------------------------------------------------
+
+EXERCISE 4
+
+
+
+
+
+
+
