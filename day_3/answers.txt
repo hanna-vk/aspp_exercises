@@ -3,6 +3,8 @@ Answers to exercises 1-4 can be found in each notebook respectively, and summari
 ----------------------------------------------------------------
 
 EXERCISE 1
+# exercise_1.ipynb
+# classroom.py
 
 class Person:
     def __init__(self, firstname, lastname):
@@ -28,6 +30,7 @@ if __name__ == "__main__":
 ----------------------------------------------------------------
 
 EXERCISE 2
+# exercise_2.ipynb
 
 import numpy as np
 
@@ -115,8 +118,9 @@ print('Diagonal = ', D)
 ----------------------------------------------------------------
 
 EXERCISE 3
-
+# exercise_3.ipynb
 # matmult_improved.py
+
 import numpy as np
 
 def mat_mult(N):
@@ -135,7 +139,9 @@ print(result)
 ----------------------------------------------------------------
 
 EXERCISE 4
-
+# exercise_4.ipynb
+# mpi_ranks.py
+# mpi_sum.py
 
 
 
