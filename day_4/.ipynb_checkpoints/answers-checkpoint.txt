@@ -202,5 +202,71 @@ Documentation saved in folder "docs".
 
 ----------------------------------------------------
 
+EXERCISE 3
 
+# customized_plotting.ipynb
+# my_fancy_plot.pdf
 
+# exercise_3.ipynb
+# my_custom_plot.pdf
+
+import matplotlib.pyplot as plt
+import sklearn.datasets as datasets
+import numpy as np
+import random
+
+# Loading dataset
+forest = datasets.fetch_covtype()
+
+# Splitting dataset
+forest_data = forest['data']
+forest_target = forest['target']
+forest_target_names = {'Spruce/Fir',  
+                       'Lodgepole Pine', 
+                       'Ponderosa Pine', 
+                       'Cottonwood/Willow', 
+                       'Aspen',  
+                       'Douglas-fir', 
+                       'Krummholz'}
+forest_feature_names = forest['feature_names']
+
+# Retain only the quantitative features and drop the qualitative, binary ones
+forest_data_small = forest_data[:,[0,1,2,3,4,5,6,7,9]]
+# Features:
+    #'Elevation', 
+    #'Aspect', 
+    #'Slope', 
+    #'Horizontal_Distance_To_Hydrology', 
+    #'Vertical_Distance_To_Hydrology', 
+    #'Horizontal_Distance_To_Roadways', 
+    #'Hillshade_9am', 
+    #'Hillshade_Noon', 
+    #'Hillshade_3pm', 
+
+# Randomly choose 1,000 points from the dataset
+rand_rows = random.sample(list(range(forest_data.shape[0])), 500)
+forest_data_small = forest_data_small[rand_rows,:]   
+forest_target_small = forest_target[rand_rows] 
+forest_feature_names_small = forest_feature_names[0:9]
+
+feature1 = 1
+feature2 = 7
+
+x = forest_data_small[:,feature1]
+y = forest_data_small[:,feature2]
+
+fig, ax = plt.subplots()
+scatter = ax.scatter(x,y, c=forest_target_small, alpha=0.4) 
+
+ax.set_xlabel(forest_feature_names_small[feature1])
+ax.set_ylabel(forest_feature_names_small[feature2]) 
+ax.set_title('Forest cover type')
+
+handles, _ = scatter.legend_elements(prop="colors", alpha=0.4)
+legend1 = ax.legend(handles, forest_target_names, loc="lower right")
+ax.add_artist(legend1)
+
+ax.grid(True)
+fig.tight_layout()
+
+plt.show()
