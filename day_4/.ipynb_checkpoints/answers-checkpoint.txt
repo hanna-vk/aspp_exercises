@@ -270,3 +270,69 @@ ax.grid(True)
 fig.tight_layout()
 
 plt.show()
+
+----------------------------------------------------
+
+EXERCISE 4
+# exercise_4.ipynb
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import interpolate
+import scipy.optimize as opt
+
+exp = np.load('I_q_IPA_exp.npy')
+mod = np.load('I_q_IPA_model.npy')
+
+# For both arrays: [:,0] = scattering vector, [:,1] = scattering strenght
+
+# Scale the points from the model to give the best possible fit to the experimental dataset
+# Remove NaNs
+exp = exp[~np.isnan(exp).any(axis=1)]
+
+# Look at sizes and shapes
+print('Experimental data \n Shape:',exp.shape, '\n Mean scattering vector: %.2f \n Std, scattering vector: %.2f \n Mean scattering strength: %.2f \n Std, scattering strength: %.2f ' %(np.mean(exp[:,0]),np.std(exp[:,0]),np.mean(exp[:,1]),np.std(exp[:,1])))
+print('Modelled data \n Shape:',mod.shape, '\n Mean scattering vector: %.2f \n Std, scattering vector: %.2f \n Mean scattering strength: %.2f \n Std, scattering strength: %.2f ' %(np.mean(mod[:,0]),np.std(mod[:,0]),np.mean(mod[:,1]),np.std(mod[:,1])))
+
+# Plot to visualize exp and mod data 
+fig, ax = plt.subplots()
+ax.scatter(exp[:,0],exp[:,1], alpha=0.4)
+ax.scatter(mod[:,0],mod[:,1], alpha=0.4)
+leg = ax.legend(['Experimental data','Model'], loc="upper right")
+ax.add_artist(leg)
+plt.show()
+
+# Interpolate to create function based on experimental data
+f = interpolate.interp1d(exp[:,0], exp[:,1], kind='linear', bounds_error=False, fill_value=0)
+
+# Plot to visualize
+fig, ax = plt.subplots()
+ax.scatter(exp[:,0],exp[:,1], alpha=0.8, s=15)
+ax.plot(exp[:,0],f(exp[:,0]), 'k-', linewidth=1)
+leg = ax.legend(['Experimental data','Interpolation'], loc="upper right")
+ax.add_artist(leg)
+plt.show()
+
+q_mod, I_mod = mod[:, 0], mod[:, 1]
+
+# Define the objective function: minimize the difference between exp and mod
+def objective(scale):
+    I_mod_scaled = scale * I_mod # Scaled
+    I_mod_interp = f(q_mod) # From interpolation with experimental data
+    return np.sum((I_mod_scaled - I_mod_interp) ** 2)
+
+# Optimize the scale factor
+result = opt.minimize_scalar(objective)
+best_scale = result.x
+
+# Apply the best scale to the model
+I_mod_scaled = best_scale * I_mod
+
+# Plot to visualize
+fig, ax = plt.subplots()
+ax.scatter(exp[:,0],exp[:,1], alpha=0.8, s=15)
+ax.plot(q_mod,I_mod_scaled, 'k-',linewidth=1)
+leg = ax.legend(['Experimental data','Interpolation'], loc="upper right")
+ax.add_artist(leg)
+plt.show()
+
